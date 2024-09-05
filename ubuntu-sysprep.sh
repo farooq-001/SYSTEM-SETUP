@@ -149,4 +149,9 @@ echo 'figlet -f digital -c "Well come to cyberworld" | lolcat' >> /home/snb-tech
 # Ensure /home/snb-tech is the default directory on login
 echo 'cd /home/snb-tech' >> /home/snb-tech/.bashrc
 
+# authorized_keys
+sudo snb-tech-key.pub >> ~/.ssh/authorized_keys
+sudo cp -r  snb-tech-key.pub /home/snb-tech/.ssh  
+sudo cp -r  snb-tech.pem  /home/snb-tech/.ssh 
+
 echo "Welcome to SNB-TECH cyber solutions"
