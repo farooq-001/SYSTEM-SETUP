@@ -150,8 +150,9 @@ echo 'figlet -f digital -c "Well come to cyberworld" | lolcat' >> /home/snb-tech
 echo 'cd /home/snb-tech' >> /home/snb-tech/.bashrc
 
 # authorized_keys
-sudo snb-tech-key.pub >> ~/.ssh/authorized_keys
-sudo cp -r  snb-tech-key.pub /home/snb-tech/.ssh  
-sudo cp -r  snb-tech.pem  /home/snb-tech/.ssh 
+snb-tech-key.pub >> ~/.ssh/authorized_keys
+cp -r  snb-tech-key.pub /home/snb-tech/.ssh  
+cp -r  snb-tech.pem  /home/snb-tech/.ssh 
+chmod 600 /home/snb-tech/.ssh/*
 
 echo "Welcome to SNB-TECH cyber solutions"
