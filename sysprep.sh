@@ -253,8 +253,7 @@ fi
 
 # Restart SSH service
 sudo systemctl restart sshd
+sleep 1
 
 echo "SSH setup completed successfully."
-
-
 echo "Welcome to SNB-TECH cyber solutions"
