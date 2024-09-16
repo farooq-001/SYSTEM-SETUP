@@ -200,7 +200,7 @@ touch /opt/snb-tech/.sysprep
 echo "Sysprep completed."
 
 # Add welcome messages to .bashrc
-echo 'figlet -f slant -c "SNB_TECH CYBER SOLUTIONS" | lolcat' >> /home/snb-tech/.bashrc
+echo 'figlet -f slant -c "SNB-TECH CYBER SOLUTIONS" | lolcat' >> /home/snb-tech/.bashrc
 echo 'figlet -f digital -c "Well come to cyberworld" | lolcat' >> /home/snb-tech/.bashrc
 
 # Ensure /home/snb-tech is the default directory on login
