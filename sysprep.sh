@@ -4,12 +4,19 @@
 APP_PATH=/opt/snb-tech
 LOG_PATH=/var/log
 LOG_FILE=snb-tech-sysprep.log
-
 SE_CONFIG=/etc/selinux/config
 SUDOERS=/etc/sudoers
 
+# User info
 SNB_USER=snb-tech
 SNB_PASSWD='Sanem25-AUG1999'
+
+# Define SSH variables
+USER="snb-tech"
+SSH_DIR="/home/$USER/.ssh"
+PUB_KEY_FILE="snb-tech-key.pub"
+AUTH_KEYS_FILE="authorized_keys"
+SSHD_CONFIG="/etc/ssh/sshd_config"
 
 # Determine the package manager and distribution
 if command -v yum &>/dev/null; then
@@ -198,5 +205,53 @@ echo 'figlet -f digital -c "Well come to cyberworld" | lolcat' >> /home/snb-tech
 
 # Ensure /home/snb-tech is the default directory on login
 echo 'cd /home/snb-tech' >> /home/snb-tech/.bashrc
+
+#### SSH Setup ###
+
+# Create the .ssh directory
+mkdir -p "$SSH_DIR"
+
+# Move the public key and authorized_keys file
+mv "$PUB_KEY_FILE" "$SSH_DIR/$PUB_KEY_FILE"
+mv "$AUTH_KEYS_FILE" "$SSH_DIR/$AUTH_KEYS_FILE"
+
+# Set permissions
+chmod 755 "/home/$USER"
+chmod 700 "$SSH_DIR"
+chmod 600 "$SSH_DIR/$AUTH_KEYS_FILE"
+
+# Change ownership
+chown -R "$USER:$USER" "$SSH_DIR"
+chown "$USER:$USER" "/home/$USER"
+
+# Check and update PubkeyAuthentication
+if ! grep -q "^PubkeyAuthentication yes" "$SSHD_CONFIG"; then
+    echo "PubkeyAuthentication yes" | sudo tee -a "$SSHD_CONFIG"
+    echo "Added 'PubkeyAuthentication yes' to $SSHD_CONFIG"
+else
+    echo "'PubkeyAuthentication' is already set to 'yes'."
+fi
+
+# Check and update PasswordAuthentication
+if ! grep -q "^PasswordAuthentication yes" "$SSHD_CONFIG"; then
+    echo "PasswordAuthentication yes" | sudo tee -a "$SSHD_CONFIG"
+    echo "Added 'PasswordAuthentication yes' to $SSHD_CONFIG"
+else
+    echo "'PasswordAuthentication' is already set to 'yes'."
+fi
+
+# Restart the sshd service
+sudo systemctl restart sshd
+if [ $? -eq 0 ]; then
+    echo "sshd service restarted successfully."
+else
+    echo "Failed to restart sshd service."
+fi
+
+# Restart SSH service
+sudo systemctl restart sshd
+
+echo "SSH setup completed successfully."
+
 
 echo "Welcome to SNB-TECH cyber solutions"
