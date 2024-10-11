@@ -144,7 +144,7 @@ sudo gem install lolcat
 echo 'python3 -c "import pyfiglet; print(pyfiglet.figlet_format(\"SNB-TECH CYBER SOLUTIONS\", font=\"slant\"))" | lolcat' >> "/home/$SNB_USER/.bashrc"
 echo 'python3 -c "import pyfiglet; print(pyfiglet.figlet_format(\"Welcome to Cyberworld\", font=\"digital\"))" | lolcat' >> "/home/$SNB_USER/.bashrc"
 
-echo 'python3 -c "import pyfiglet; print(pyfiglet.figlet_format(\"### root ###\", font=\"slant\"))" | lolcat' >> /root/.bashrc
+echo 'python3 -c "import pyfiglet; print(pyfiglet.figlet_format(\"## root ##\", font=\"slant\"))" | lolcat' >> /root/.bashrc
 echo 'python3 -c "import pyfiglet; print(pyfiglet.figlet_format(\"Welcome to Cyberworld\", font=\"digital\"))" | lolcat' >> /root/.bashrc
 
 
