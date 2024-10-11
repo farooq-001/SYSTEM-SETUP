@@ -12,7 +12,7 @@ SNB_USER=snb-tech
 SNB_PASSWD='Sanem25-AUG1999'
 
 # Define SSH variables
-USER="snb-tech"
+USER="$SNB_USER"
 SSH_DIR="/home/$USER/.ssh"
 PUB_KEY_FILE="snb-tech-key.pub"
 AUTH_KEYS_FILE="authorized_keys"
@@ -34,10 +34,10 @@ else
 fi
 
 # Ensure logging path exists
-mkdir -p $LOG_PATH
+mkdir -p "$LOG_PATH"
 
 # Redirect stdout and stderr to log file
-exec > >(tee -i $LOG_PATH/$LOG_FILE)
+exec > >(tee -i "$LOG_PATH/$LOG_FILE")
 exec 2>&1
 
 prompt_confirm() {
@@ -78,17 +78,17 @@ if [ "$PACKAGE_MANAGER" = "yum" ] || [ "$PACKAGE_MANAGER" = "dnf" ]; then
 fi
 
 # Update SSH configuration
-if [ -f /etc/ssh/sshd_config ]; then
-    if grep -q "^PermitRootLogin" /etc/ssh/sshd_config; then
-        sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+if [ -f "$SSHD_CONFIG" ]; then
+    if grep -q "^PermitRootLogin" "$SSHD_CONFIG"; then
+        sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' "$SSHD_CONFIG"
     else
-        echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+        echo "PermitRootLogin yes" >> "$SSHD_CONFIG"
     fi
 
-    if grep -q "^PasswordAuthentication" /etc/ssh/sshd_config; then
-        sed -i 's/^PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+    if grep -q "^PasswordAuthentication" "$SSHD_CONFIG"; then
+        sed -i 's/^PasswordAuthentication.*/PasswordAuthentication yes/' "$SSHD_CONFIG"
     else
-        echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
+        echo "PasswordAuthentication yes" >> "$SSHD_CONFIG"
     fi
 
     systemctl restart sshd
@@ -127,26 +127,30 @@ echo 'export HISTFILESIZE=100000' >> /etc/profile.d/snb-tech-profile.sh
 chmod +x /etc/profile.d/snb-tech-profile.sh
 
 # Create sysprep marker file
-mkdir -p /opt/snb-tech
-touch /opt/snb-tech/.sysprep
+mkdir -p "$APP_PATH"
+touch "$APP_PATH/.sysprep"
 echo "Sysprep completed."
-sudo yum install python3 pip3 -y
-sudo pip3 install pyfiglet 
-sudo gem install lolcat
-sudo yum groupinstall "Development Tools" -y
-sudo yum install ruby -y
 
+# Install Python and related tools
+yum install -y python3 python3-pip
+pip3 install pyfiglet
+yum groupinstall "Development Tools" -y
+yum install ruby -y
+sudo gem install lolcat
 
 
 # Add welcome messages to .bashrc
-echo 'python3 -c "import pyfiglet; print(pyfiglet.figlet_format('SNB-TECH CYBER SOLUTIONS', font='slant'))" | lolcat' >> /home/snb-tech/.bashrc
-echo 'python3 -c "import pyfiglet; print(pyfiglet.figlet_format('Welcome to Cyberworld', font='digital'))" | lolcat' >> /home/snb-tech/.bashrc
+# Add welcome messages to .bashrc
+echo 'python3 -c "import pyfiglet; print(pyfiglet.figlet_format(\"SNB-TECH CYBER SOLUTIONS\", font=\"slant\"))" | lolcat' >> "/home/$SNB_USER/.bashrc"
+echo 'python3 -c "import pyfiglet; print(pyfiglet.figlet_format(\"Welcome to Cyberworld\", font=\"digital\"))" | lolcat' >> "/home/$SNB_USER/.bashrc"
 
-echo 'python3 -c "import pyfiglet; print(pyfiglet.figlet_format('### root ###', font='slant'))" | lolcat'  >> /root/.bashrc
-echo 'python3 -c "import pyfiglet; print(pyfiglet.figlet_format('Welcome to Cyberworld', font='digital'))" | lolcat' >> /root/.bashrc
+echo 'python3 -c "import pyfiglet; print(pyfiglet.figlet_format(\"### root ###\", font=\"slant\"))" | lolcat' >> /root/.bashrc
+echo 'python3 -c "import pyfiglet; print(pyfiglet.figlet_format(\"Welcome to Cyberworld\", font=\"digital\"))" | lolcat' >> /root/.bashrc
+
+
 
 # Ensure /home/snb-tech is the default directory on login
-echo 'cd /home/snb-tech' >> /home/snb-tech/.bashrc
+echo 'cd /home/snb-tech' >> "/home/$SNB_USER/.bashrc"
 
 #### SSH Setup ###
 
@@ -174,17 +178,8 @@ else
     echo "'PubkeyAuthentication' is already set to 'yes'."
 fi
 
-# Check and update PasswordAuthentication
-if ! grep -q "^PasswordAuthentication yes" "$SSHD_CONFIG"; then
-    echo "PasswordAuthentication yes" | sudo tee -a "$SSHD_CONFIG"
-    echo "Added 'PasswordAuthentication yes' to $SSHD_CONFIG"
-else
-    echo "'PasswordAuthentication' is already set to 'yes'."
-fi
-
 # Restart the sshd service
-sudo systemctl restart sshd
-if [ $? -eq 0 ]; then
+if systemctl restart sshd; then
     echo "sshd service restarted successfully."
 else
     echo "Failed to restart sshd service."
