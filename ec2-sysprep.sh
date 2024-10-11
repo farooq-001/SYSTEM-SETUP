@@ -132,6 +132,11 @@ touch /opt/snb-tech/.sysprep
 echo "Sysprep completed."
 sudo yum install python3 pip3 -y
 sudo pip3 install pyfiglet 
+sudo gem install lolcat
+sudo yum groupinstall "Development Tools" -y
+sudo yum install ruby -y
+
+
 
 # Add welcome messages to .bashrc
 echo 'python3 -c "import pyfiglet; print(pyfiglet.figlet_format('SNB-TECH CYBER SOLUTIONS', font='slant'))" | lolcat' >> /home/snb-tech/.bashrc
