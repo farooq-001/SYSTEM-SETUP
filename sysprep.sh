@@ -252,7 +252,7 @@ else
 fi
 
 # Restart SSH service
-sudo systemctl restart sshd
+sudo systemctl restart sshd  ssh
 sleep 1
 
 echo "SSH setup completed successfully."
