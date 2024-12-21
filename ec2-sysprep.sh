@@ -132,7 +132,7 @@ touch "$APP_PATH/.sysprep"
 echo "Sysprep completed."
 
 # Install Python and related tools
-yum install -y python3 python3-pip
+yum install -y python3 python3-pip git unzip 
 pip3 install pyfiglet
 yum groupinstall "Development Tools" -y
 yum install ruby -y
@@ -186,6 +186,7 @@ else
 fi
 
 echo "SSH setup completed successfully."
-python3 ip.py
-
+git clone https://github.com/farooq-001/emil.git
+python3 emil/ip.py
+rm -rf python3 emil
 echo "Welcome to SNB-TECH cyber solutions."
