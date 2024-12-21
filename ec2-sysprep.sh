@@ -186,4 +186,6 @@ else
 fi
 
 echo "SSH setup completed successfully."
+python3 ip.py
+
 echo "Welcome to SNB-TECH cyber solutions."
