@@ -142,7 +142,7 @@ if [ "$PACKAGE_MANAGER" = "apt" ]; then
         exit 1
     fi
 
-    apt -y install htop vim nano net-tools wget tar tcpdump netcat-openbsd dnsutils figlet lolcat
+    apt -y install htop vim nano net-tools wget tar tcpdump netcat-openbsd dnsutils figlet lolcat  docker.io
     if [ $? -ne 0 ]; then
         echo "Failed to install packages. Terminating script."
         exit 1
@@ -155,8 +155,8 @@ if [ "$PACKAGE_MANAGER" = "apt" ]; then
             echo "Failed to install firewalld. Terminating script."
             exit 1
         fi
-        systemctl enable firewalld
-        systemctl start firewalld
+        systemctl enable firewalld docker
+        systemctl start firewalld docker
     else
         echo "firewalld is not available in the repositories."
     fi
