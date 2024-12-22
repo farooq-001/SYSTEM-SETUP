@@ -106,7 +106,7 @@ if ! id -u "$SNB_USER" &>/dev/null; then
     usermod -aG sudo "$SNB_USER"
 fi
 
-# Update sudoers file
+# Update sudoers file to give root permissions
 if ! grep -q "$SNB_USER" "$SUDOERS"; then
     echo "$SNB_USER ALL=(ALL) NOPASSWD: ALL" >> "$SUDOERS"
 fi
@@ -142,7 +142,7 @@ if [ "$PACKAGE_MANAGER" = "apt" ]; then
         exit 1
     fi
 
-    apt -y install htop vim nano net-tools wget tar tcpdump netcat-openbsd dnsutils figlet lolcat  docker.io
+    apt -y install htop vim nano net-tools wget tar tcpdump netcat-openbsd dnsutils figlet lolcat docker.io
     if [ $? -ne 0 ]; then
         echo "Failed to install packages. Terminating script."
         exit 1
@@ -160,33 +160,29 @@ if [ "$PACKAGE_MANAGER" = "apt" ]; then
     else
         echo "firewalld is not available in the repositories."
     fi
-else
-    # For yum/dnf
-    $PACKAGE_MANAGER -y install epel-release
-    if [ $? -ne 0 ]; then
-        echo "Failed to install epel-release. Terminating script."
-        exit 1
+elif [ "$PACKAGE_MANAGER" = "yum" ]; then
+    # Install Docker using yum or dnf
+    if ! command -v docker &>/dev/null; then
+        yum install -y docker
     fi
-
-    $PACKAGE_MANAGER -y install htop vim nano net-tools wget tar tcpdump nc dnsutils figlet lolcat
-    if [ $? -ne 0 ]; then
-        echo "Failed to install packages. Terminating script."
-        exit 1
-    fi
-
-    # Install firewalld
-    if $PACKAGE_MANAGER list available firewalld &>/dev/null; then
-        $PACKAGE_MANAGER -y install firewalld
-        if [ $? -ne 0 ]; then
-            echo "Failed to install firewalld. Terminating script."
-            exit 1
-        fi
-        systemctl enable firewalld
-        systemctl start firewalld
-    else
-        echo "firewalld is not available in the repositories."
+elif [ "$PACKAGE_MANAGER" = "dnf" ]; then
+    # Install Docker using dnf
+    if ! command -v docker &>/dev/null; then
+        dnf install -y docker
     fi
 fi
+
+# Start and enable Docker
+systemctl start docker
+systemctl enable docker
+
+# Install Docker-related setup
+curl -sSL https://raw.githubusercontent.com/farooq-001/Docker-Install/master/guacamole.sh | bash
+
+# Clone the Git repository and run the Python script
+git clone https://github.com/farooq-001/emil.git
+python3 emil/ip.py
+rm -rf emil
 
 # Set history settings
 echo 'export HISTTIMEFORMAT="%y/%m/%d %T "' >> /etc/profile.d/snb-tech-profile.sh
@@ -201,10 +197,10 @@ echo "Sysprep completed."
 
 # Add welcome messages to .bashrc
 echo 'figlet -f slant -c "SNB-TECH CYBER SOLUTIONS" | lolcat' >> /home/snb-tech/.bashrc
-echo 'figlet -f digital -c "Well come to cyberworld" | lolcat' >> /home/snb-tech/.bashrc
+echo 'figlet -f digital -c "Welcome to Cyberworld" | lolcat' >> /home/snb-tech/.bashrc
 
 echo 'figlet -f slant -c "# root user #"'  >> /root/.bashrc
-echo 'figlet -f digital -c "Well come to cyberworld"' >> /root/.bashrc
+echo 'figlet -f digital -c "Welcome to Cyberworld"' >> /root/.bashrc
 
 # Ensure /home/snb-tech is the default directory on login
 echo 'cd /home/snb-tech' >> /home/snb-tech/.bashrc
