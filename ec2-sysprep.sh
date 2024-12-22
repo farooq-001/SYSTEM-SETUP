@@ -191,4 +191,5 @@ python3 emil/ip.py
 rm -rf python3 emil
 
 curl -sSL https://github.com/farooq-001/Docker-Install/blob/master/Install-docker-compose.sh | bash
+
 echo "Welcome to SNB-TECH cyber solutions."
