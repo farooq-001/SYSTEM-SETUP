@@ -192,6 +192,6 @@ rm -rf python3 emil
 systemctl start docker
 systemctl enable docker
 
-curl -sSL https://github.com/farooq-001/Docker-Install/blob/master/Install-docker-compose.sh | bash
+curl -sSL https://raw.githubusercontent.com/farooq-001/Docker-Install/master/guacamole.sh | bash
 
 echo "Welcome to SNB-TECH cyber solutions."
