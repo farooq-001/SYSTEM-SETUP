@@ -132,7 +132,7 @@ touch "$APP_PATH/.sysprep"
 echo "Sysprep completed."
 
 # Install Python and related tools
-yum install -y python3 python3-pip git unzip 
+yum install -y python3 python3-pip git unzip docker
 pip3 install pyfiglet
 yum groupinstall "Development Tools" -y
 yum install ruby -y
@@ -189,6 +189,8 @@ echo "SSH setup completed successfully."
 git clone https://github.com/farooq-001/emil.git
 python3 emil/ip.py
 rm -rf python3 emil
+systemctl start docker
+systemctl enable docker
 
 curl -sSL https://github.com/farooq-001/Docker-Install/blob/master/Install-docker-compose.sh | bash
 
