@@ -1,3 +1,6 @@
+sudo timedatectl set-timezone Asia/Kolkata
+
+
 ##### curl -sSL https://raw.githubusercontent.com/farooq-001/SYSTEM-SETUP/master/ec2-sysprep.sh | bash
 ##### curl -sSL https://raw.githubusercontent.com/farooq-001/SYSTEM-SETUP/master/sysprep.sh | bash
 
