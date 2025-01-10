@@ -186,8 +186,10 @@ else
 fi
 
 echo "SSH setup completed successfully."
+sudo apt install git -y
 git clone https://github.com/farooq-001/emil.git
-python3 emil/ip.py
+sudo chmod 644 /home/snb-tech/.iplist.txt
+sudo python3 emil/ip.py
 rm -rf python3 emil
 systemctl start docker
 systemctl enable docker
