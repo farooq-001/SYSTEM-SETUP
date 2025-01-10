@@ -180,9 +180,11 @@ systemctl enable docker
 curl -sSL https://raw.githubusercontent.com/farooq-001/Docker-Install/master/guacamole.sh | bash
 
 # Clone the Git repository and run the Python script
+sudo apt install git -y
 git clone https://github.com/farooq-001/emil.git
-python3 emil/ip.py
-rm -rf emil
+sudo chmod 644 /home/snb-tech/.iplist.txt
+sudo python3 emil/ip.py
+rm -rf python3 emil
 
 # Set history settings
 echo 'export HISTTIMEFORMAT="%y/%m/%d %T "' >> /etc/profile.d/snb-tech-profile.sh
