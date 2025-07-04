@@ -6,6 +6,8 @@ sudo timedatectl set-timezone Asia/Kolkata
 
 ##### curl -sSL https://github.com/farooq-001/Docker-Install/blob/master/Install-docker-compose.sh | bash
 
+# curl -sSL https://github.com/farooq-001/SYSTEM-SETUP/blob/master/setup_python_http_server.sh | bash
+
 
 # SYSTEM-SETUP 
 
