@@ -9,7 +9,7 @@ SE_CONFIG=/etc/selinux/config
 SUDOERS=/etc/sudoers
 
 SNB_USER=snb-tech
-SNB_PASSWD='Sanem25-AUG1999'
+SNB_PASSWD='Sanem001@'
 
 # Ensure logging path exists
 mkdir -p $LOG_PATH
